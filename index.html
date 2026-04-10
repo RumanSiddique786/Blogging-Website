@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RumanWrites - Publish Your Passions, Your Way</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="bg-slate-50 text-slate-900 font-sans">
+
+    <!-- NAVBAR -->
+    <nav class="bg-white shadow-sm border-b sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 bg-gradient-to-br from-indigo-600 to-violet-600 rounded-2xl flex items-center justify-center text-white text-3xl font-bold">R</div>
+                <h1 class="text-3xl font-bold tracking-tighter">RumanWrites</h1>
+            </div>
+
+            <div class="hidden md:flex items-center gap-8 font-medium">
+                <a onclick="navigateTo('feed')" class="hover:text-indigo-600 cursor-pointer">Home</a>
+                <a onclick="navigateTo('discover')" class="hover:text-indigo-600 cursor-pointer">Discover</a>
+                <a onclick="navigateTo('write')" class="hover:text-indigo-600 cursor-pointer">Write</a>
+                <a onclick="navigateTo('profile')" class="hover:text-indigo-600 cursor-pointer">My Blog</a>
+            </div>
+
+            <div class="flex items-center gap-4">
+                <button onclick="showAuthModal()" id="auth-btn"
+                        class="bg-slate-900 hover:bg-black text-white px-6 py-2.5 rounded-3xl text-sm font-medium">
+                    Login / Sign up
+                </button>
+                <button onclick="logout()" id="logout-btn" class="hidden text-red-500 hover:text-red-600">
+                    <i class="fa-solid fa-right-from-bracket text-xl"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="max-w-7xl mx-auto px-6">
+
+        <!-- HERO SECTION -->
+        <div class="pt-16 pb-20 text-center">
+            <h2 class="text-5xl md:text-6xl font-bold tracking-tight mb-6">Publish your passions,<br>your way</h2>
+            <p class="text-xl text-slate-600 max-w-2xl mx-auto">Create a beautiful blog. Share your stories with the world. Built for thinkers, writers, and creators like Ruman Tanveer.</p>
+            <div class="mt-10">
+                <button onclick="navigateTo('write')" 
+                        class="bg-gradient-to-r from-indigo-600 to-violet-600 text-white px-10 py-4 rounded-3xl text-lg font-semibold shadow-md hover:shadow-lg">
+                    Start Writing Now
+                </button>
+            </div>
+        </div>
+
+        <!-- CATEGORIES -->
+        <div class="flex flex-wrap gap-3 mb-12 justify-center">
+            <span onclick="filterCategory(this)" class="category-chip active px-5 py-2 bg-indigo-100 text-indigo-700 rounded-3xl text-sm font-medium cursor-pointer">All</span>
+            <span onclick="filterCategory(this)" class="category-chip px-5 py-2 hover:bg-slate-100 rounded-3xl text-sm font-medium cursor-pointer">Technology</span>
+            <span onclick="filterCategory(this)" class="category-chip px-5 py-2 hover:bg-slate-100 rounded-3xl text-sm font-medium cursor-pointer">Life Lessons</span>
+            <span onclick="filterCategory(this)" class="category-chip px-5 py-2 hover:bg-slate-100 rounded-3xl text-sm font-medium cursor-pointer">Writing Tips</span>
+            <span onclick="filterCategory(this)" class="category-chip px-5 py-2 hover:bg-slate-100 rounded-3xl text-sm font-medium cursor-pointer">Personal Growth</span>
+        </div>
+
+        <!-- TRENDING SECTION -->
+        <div class="mb-16">
+            <h3 class="text-2xl font-semibold mb-6 flex items-center gap-2">
+                <i class="fa-solid fa-fire text-orange-500"></i> Trending This Week
+            </h3>
+            <div id="trending-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"></div>
+        </div>
+
+        <!-- ALL STORIES / FEED -->
+        <div id="page-feed" class="page">
+            <h2 class="text-3xl font-semibold mb-8">Latest Stories</h2>
+            <div id="posts-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"></div>
+        </div>
+
+        <!-- DISCOVER PAGE (More content) -->
+        <div id="page-discover" class="page hidden">
+            <h2 class="text-3xl font-semibold mb-8">Discover More</h2>
+            <div id="discover-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"></div>
+        </div>
+
+        <!-- WRITE PAGE -->
+        <div id="page-write" class="page hidden">
+            <div class="max-w-3xl mx-auto bg-white rounded-3xl shadow-xl p-10">
+                <h2 class="text-3xl font-semibold mb-2">Create New Post</h2>
+                <p class="text-slate-500 mb-8">Share your thoughts with the world</p>
+                <input id="post-title" type="text" placeholder="Post Title" class="w-full px-6 py-4 text-2xl border border-slate-200 rounded-2xl focus:outline-none focus:border-indigo-500 mb-6">
+                <textarea id="post-content" rows="16" placeholder="Start writing here..." class="w-full px-6 py-5 border border-slate-200 rounded-2xl focus:outline-none focus:border-indigo-500 text-lg leading-relaxed"></textarea>
+                <button onclick="publishPost()" class="mt-8 bg-gradient-to-r from-indigo-600 to-violet-600 text-white px-12 py-4 rounded-3xl font-semibold text-lg shadow-md">Publish Now</button>
+            </div>
+        </div>
+
+        <!-- PROFILE / MY BLOG -->
+        <div id="page-profile" class="page hidden">
+            <div class="max-w-4xl mx-auto">
+                <div class="bg-white rounded-3xl shadow p-10 mb-12">
+                    <div class="flex items-center gap-6">
+                        <div id="profile-avatar" class="text-7xl"></div>
+                        <div>
+                            <h2 id="profile-name" class="text-3xl font-semibold"></h2>
+                            <p id="profile-email" class="text-slate-500"></p>
+                        </div>
+                    </div>
+                </div>
+                <h3 class="text-2xl font-semibold mb-6">My Stories</h3>
+                <div id="my-posts" class="space-y-6"></div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- TESTIMONIALS / ACTIVITY SECTION -->
+    <div class="bg-white py-16 mt-20">
+        <div class="max-w-7xl mx-auto px-6">
+            <h3 class="text-2xl font-semibold text-center mb-10">What Writers Are Saying</h3>
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="bg-slate-50 p-8 rounded-3xl">
+                    <p class="italic">"RumanWrites made publishing so simple. My first post got 50+ likes on day one!"</p>
+                    <p class="mt-6 font-medium">- Priya Sharma</p>
+                </div>
+                <div class="bg-slate-50 p-8 rounded-3xl">
+                    <p class="italic">"The clean interface helps me focus on writing instead of formatting."</p>
+                    <p class="mt-6 font-medium">- Arjun Rao</p>
+                </div>
+                <div class="bg-slate-50 p-8 rounded-3xl">
+                    <p class="italic">"Finally a platform that feels personal and powerful at the same time."</p>
+                    <p class="mt-6 font-medium">- Sarah Khan</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="bg-slate-900 text-slate-300 py-16">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="grid md:grid-cols-4 gap-10">
+                <div>
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-9 h-9 bg-gradient-to-br from-indigo-500 to-violet-500 rounded-2xl flex items-center justify-center text-white text-2xl font-bold">R</div>
+                        <span class="text-2xl font-bold text-white">RumanWrites</span>
+                    </div>
+                    <p class="text-sm">A personal blogging platform by Ruman Tanveer.<br>Share your voice with the world.</p>
+                </div>
+                <div>
+                    <h4 class="font-semibold text-white mb-4">Quick Links</h4>
+                    <ul class="space-y-2 text-sm">
+                        <li><a onclick="navigateTo('feed')" class="hover:text-white cursor-pointer">Home</a></li>
+                        <li><a onclick="navigateTo('discover')" class="hover:text-white cursor-pointer">Discover</a></li>
+                        <li><a onclick="navigateTo('write')" class="hover:text-white cursor-pointer">Write</a></li>
+                        <li><a onclick="navigateTo('profile')" class="hover:text-white cursor-pointer">My Blog</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-semibold text-white mb-4">Company</h4>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="#" class="hover:text-white">About Ruman Tanveer</a></li>
+                        <li><a href="#" class="hover:text-white">Blogging Tips</a></li>
+                        <li><a href="#" class="hover:text-white">Community</a></li>
+                    </ul>
+                </div>
+                                <div>
+                    <h4 class="font-semibold text-white mb-4">Contact</h4>
+                    <p class="text-sm">Lucknow, Uttar Pradesh, India</p>
+                    <p class="text-sm mt-1">hello@rumanwrites.com</p>
+                    <div class="flex gap-4 mt-6 text-xl">
+                        <a href="https://twitter.com" target="_blank" class="hover:text-white cursor-pointer">
+                            <i class="fa-brands fa-twitter"></i>
+                        </a>
+                        <a href="https://linkedin.com" target="_blank" class="hover:text-white cursor-pointer">
+                            <i class="fa-brands fa-linkedin"></i>
+                        </a>
+                        <a href="https://instagram.com" target="_blank" class="hover:text-white cursor-pointer">
+                            <i class="fa-brands fa-instagram"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="border-t border-slate-700 mt-16 pt-8 text-xs flex flex-col md:flex-row justify-between items-center">
+                <p>© 2026 Ruman Tanveer • RumanWrites. All rights reserved.</p>
+                <p class="mt-4 md:mt-0">Made with ❤️ for writers and dreamers</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Post Modal -->
+    <div id="post-modal" class="hidden fixed inset-0 bg-black/70 z-[100] flex items-center justify-center p-4"></div>
+
+    <!-- Auth Modal -->
+    <div id="auth-modal" class="hidden fixed inset-0 bg-black/70 z-[200] flex items-center justify-center p-4"></div>
+
+    <!-- Toast -->
+    <div id="toast" class="hidden fixed bottom-6 right-6 bg-slate-800 text-white px-6 py-4 rounded-3xl shadow-2xl"></div>
+
+    <script src="script.js"></script>
+</body>
+</html>
