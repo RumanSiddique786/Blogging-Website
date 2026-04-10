@@ -2,6 +2,9 @@
 
 A clean, modern, and fully functional blogging website built with pure **HTML, CSS, and JavaScript**.
 
+## 🌐 Live Demo
+https://rumanwrites.netlify.app/
+
 ### Features
 
 - **User Authentication**: Login & Signup (with localStorage persistence)
