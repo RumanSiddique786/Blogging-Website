@@ -215,5 +215,15 @@
     <div id="toast" class="hidden fixed bottom-6 right-6 bg-slate-800 text-white px-6 py-4 rounded-3xl shadow-2xl"></div>
 
     <script src="script.js"></script>
+
+    <!-- Chatbot Code -->
+    <link href="https://cdn.jsdelivr.net/npm/@n8n/chat/dist/style.css" rel="stylesheet" />
+    <script type="module">
+	import { createChat } from 'https://cdn.jsdelivr.net/npm/@n8n/chat/dist/chat.bundle.es.js';
+
+	createChat({
+		webhookUrl: 'https://khanr.app.n8n.cloud/webhook/c0e56304-ea10-4101-a096-cf96a23249ba/chat'
+	});
+        
 </body>
 </html>
